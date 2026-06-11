@@ -11,8 +11,9 @@
 - スタイリングはTailwind CSS v4を中心に行う。
 - Tailwind CSSは `@tailwindcss/vite` pluginでViteに統合する。
 - `src/index.css` で `@import "tailwindcss";` を読み込む。
-- テーマはライトテーマ固定にする。
-- ダークモードおよび `prefers-color-scheme` による分岐は使わない。
+- テーマはライト/ダークの手動切り替えに対応する。
+- 初回テーマは `localStorage` の `theme` を優先し、未保存時は `prefers-color-scheme` を参照する。
+- ダークモードは `document.documentElement` の `dark` classとTailwindの `dark:` variantで表現する。
 - グラデーション、影、強い装飾は使わない。
 - 配色はゆず系の単色パレットを使い、背景はクリームホワイト、文字はチャコールブラウン、リンクや補助色にゆずリーフを使う。
 - カードを多用せず、プロジェクト項目は罫線で区切ったシンプルなリストにする。

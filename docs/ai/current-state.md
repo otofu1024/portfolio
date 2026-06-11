@@ -37,8 +37,8 @@
 ## 主要な実装ファイル
 
 - `src/main.tsx` はReactアプリを `#root` にマウントし、`src/index.css` を読み込みます。
-- `src/App.tsx` はページ全体の構造、ローカルの表示データ、プロフィールアイコンの読み込み、Tailwind CSSのユーティリティクラスによる見た目を定義します。
-- `src/index.css` はTailwind CSSの読み込み、基本タイポグラフィ、ベーススタイル、フォーカススタイルを持ちます。
+- `src/App.tsx` はページ全体の構造、ローカルの表示データ、プロフィールアイコンの読み込み、テーマ切り替え状態、Tailwind CSSのユーティリティクラスによる見た目を定義します。
+- `src/index.css` はTailwind CSSの読み込み、`dark` variant、基本タイポグラフィ、ベーススタイル、フォーカススタイルを持ちます。
 - `vite.config.ts` はReact pluginに加えて `@tailwindcss/vite` pluginを読み込みます。
 
 ## ページ構成
@@ -59,7 +59,9 @@
 - `learningTopics` は今後学びたい技術・分野の文字列配列で、Skillsセクション内に描画されます。
 - `projects` は `title`、`description`、`tech`、`link` を持つオブジェクト配列です。
 - `src/assets/icon.png` は `src/App.tsx` からimportされ、Heroセクションのプロフィールアイコンとして表示されます。
-- state、props、データ取得、context、外部設定ファイルは使っていません。
+- テーマ状態は `useState` で管理し、初期値は `localStorage` の `theme`、未保存時は `prefers-color-scheme` を参照します。
+- テーマ変更時は `document.documentElement` に `dark` classを付け外しし、`localStorage` に保存します。
+- props、データ取得、context、外部設定ファイルは使っていません。
 
 ## スタイリングの状態
 
@@ -71,9 +73,9 @@
 - セクション間は余白と薄い罫線で区切られています。
 - プロジェクト項目はカードではなく、罫線で区切られた通常のリストです。
 - Contactセクションの大枠は通常セクションのままにし、メールとGitHubのリンク部分だけ丸みのあるカードデザインを使っています。カード内には丸背景のアイコン、リンク先ラベル、補助文、右下の矢印を表示します。
-- テーマは `color-scheme: light` によるライトテーマ固定です。
+- テーマはライト/ダークの手動切り替えに対応しています。
 - 色は `docs/user/design.md` のゆず系カラーパレットを反映しています。
-- `prefers-color-scheme` によるダークモード対応はありません。
+- 初回表示時のみ `prefers-color-scheme` を参照し、その後はユーザーの手動選択を優先します。
 - グラデーション、ボックスシャドウ、強い装飾要素は使っていません。
 
 ## 今後の作業メモ
