@@ -61,6 +61,7 @@
 - `src/assets/icon.png` は `src/App.tsx` からimportされ、Heroセクションのプロフィールアイコンとして表示されます。
 - テーマ状態は `useState` で管理し、初期値は `localStorage` の `theme`、未保存時は `prefers-color-scheme` を参照します。
 - テーマ変更時は `document.documentElement` に `dark` classを付け外しし、`localStorage` に保存します。
+- ヘッダーのアクティブセクションは `IntersectionObserver` で管理し、スクロール位置に応じてAbout、Skills、Projects、Contactの下線を移動します。
 - props、データ取得、context、外部設定ファイルは使っていません。
 
 ## スタイリングの状態
@@ -68,7 +69,7 @@
 - Tailwind CSS v4をVite plugin経由で導入しています。
 - レイアウトは `src/App.tsx` 内のTailwindユーティリティクラスで定義されています。
 - ページ全体は最大幅6xlのコンテナに制限されています。
-- Heroは参考画像に寄せて、大きな日本語見出し、淡い背景文字、ドット装飾、右側のグリーン背景面、プロフィールパネルを使っています。
+- Heroは参考画像に寄せて、大きな見出し、淡い背景文字、ドット装飾、プロフィールパネル背後の斜めグリーン面を使っています。
 - プロフィールパネル内の `profileFacts` は、絵文字ではなく同じ線幅・同じ丸背景のSVGアイコンで表現しています。
 - セクション間は余白と薄い罫線で区切られています。
 - プロジェクト項目はカードではなく、罫線で区切られた通常のリストです。

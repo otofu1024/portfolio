@@ -48,6 +48,7 @@ const profileFacts = [
 ] as const
 
 function App() {
+  const [activeSection, setActiveSection] = useState('About')
   const [isDark, setIsDark] = useState(() => {
     if (typeof window === 'undefined') {
       return false
@@ -69,6 +70,41 @@ function App() {
     window.localStorage.setItem('theme', isDark ? 'dark' : 'light')
   }, [isDark])
 
+  useEffect(() => {
+    const sections = navItems
+      .map((item) => document.getElementById(item.toLowerCase()))
+      .filter((section): section is HTMLElement => section !== null)
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntry = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
+
+        if (visibleEntry?.target.id) {
+          setActiveSection(
+            visibleEntry.target.id[0].toUpperCase() +
+              visibleEntry.target.id.slice(1),
+          )
+        }
+      },
+      {
+        rootMargin: '-35% 0px -50% 0px',
+        threshold: [0.15, 0.35, 0.6],
+      },
+    )
+
+    sections.forEach((section) => observer.observe(section))
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
+
+  const handleNavClick = (item: string) => {
+    setActiveSection(item)
+  }
+
   return (
     <main className="min-h-dvh overflow-hidden bg-[#FDFBF2] text-[#4A3E31] transition-colors duration-300 dark:bg-[#171911] dark:text-[#F7F0DD]">
       <header className="fixed inset-x-0 top-0 z-30 border-b border-[#E5D8B5]/80 bg-[#FDFBF2]/85 backdrop-blur-xl transition-colors duration-300 dark:border-[#566333]/70 dark:bg-[#171911]/88">
@@ -80,29 +116,36 @@ function App() {
             E.M.
           </a>
           <div className="hidden items-center gap-8 md:flex">
-          <ul className="flex items-center gap-10 text-base font-semibold text-[#4A3E31] dark:text-[#F7F0DD]">
-            {navItems.map((item) => (
-              <li key={item}>
-                <a
-                  className="relative py-7 transition hover:text-[#5F8F35] focus-visible:text-[#5F8F35] dark:hover:text-[#A9BE78] dark:focus-visible:text-[#A9BE78]"
-                  href={`#${item.toLowerCase()}`}
-                >
-                  {item}
-                  {item === 'Contact' ? (
-                    <span className="absolute inset-x-3 -bottom-px h-1 bg-[#6E9D3A]" />
-                  ) : null}
-                </a>
-              </li>
-            ))}
-          </ul>
-          <button
-            className="border border-[#DCCA9D] px-4 py-2 text-sm font-black text-[#5F8F35] transition hover:border-[#6E9D3A] dark:border-[#566333] dark:text-[#A9BE78] dark:hover:border-[#A9BE78]"
-            type="button"
-            onClick={() => setIsDark((current) => !current)}
-            aria-label={isDark ? 'ライトモードに切り替える' : 'ダークモードに切り替える'}
-          >
-            {isDark ? 'Light' : 'Dark'}
-          </button>
+            <ul className="flex items-center gap-10 text-base font-semibold text-[#4A3E31] dark:text-[#F7F0DD]">
+              {navItems.map((item) => (
+                <li key={item}>
+                  <a
+                    className={`relative py-7 transition hover:text-[#5F8F35] focus-visible:text-[#5F8F35] dark:hover:text-[#A9BE78] dark:focus-visible:text-[#A9BE78] ${
+                      activeSection === item
+                        ? 'text-[#5F8F35] dark:text-[#A9BE78]'
+                        : ''
+                    }`}
+                    href={`#${item.toLowerCase()}`}
+                    onClick={() => handleNavClick(item)}
+                  >
+                    {item}
+                    <span
+                      className={`absolute inset-x-3 -bottom-px h-1 bg-[#6E9D3A] transition-opacity duration-200 dark:bg-[#A9BE78] ${
+                        activeSection === item ? 'opacity-100' : 'opacity-0'
+                      }`}
+                    />
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <button
+              className="border border-[#DCCA9D] px-4 py-2 text-sm font-black text-[#5F8F35] transition hover:border-[#6E9D3A] dark:border-[#566333] dark:text-[#A9BE78] dark:hover:border-[#A9BE78]"
+              type="button"
+              onClick={() => setIsDark((current) => !current)}
+              aria-label={isDark ? 'ライトモードに切り替える' : 'ダークモードに切り替える'}
+            >
+              {isDark ? 'Light' : 'Dark'}
+            </button>
           </div>
           <div className="flex items-center gap-3 md:hidden">
             <button
@@ -113,12 +156,13 @@ function App() {
             >
               {isDark ? 'Light' : 'Dark'}
             </button>
-          <a
-            className="border border-[#DCCA9D] px-4 py-2 text-sm font-bold text-[#5F8F35] transition hover:border-[#6E9D3A] dark:border-[#566333] dark:text-[#A9BE78]"
-            href="#contact"
-          >
-            Contact
-          </a>
+            <a
+              className="border border-[#DCCA9D] px-4 py-2 text-sm font-bold text-[#5F8F35] transition hover:border-[#6E9D3A] dark:border-[#566333] dark:text-[#A9BE78]"
+              href="#contact"
+              onClick={() => handleNavClick('Contact')}
+            >
+              Contact
+            </a>
           </div>
         </nav>
       </header>
@@ -128,7 +172,7 @@ function App() {
         className="relative min-h-dvh px-5 pt-28 pb-12 sm:px-8 lg:px-12"
         aria-labelledby="hero-title"
       >
-        <div className="absolute top-20 right-0 bottom-0 hidden w-[45vw] rounded-tl-[110px] bg-[#6E9D3A] transition-colors duration-300 dark:bg-[#36511F] lg:block" />
+        <div className="absolute top-[9.5rem] right-[-5vw] hidden h-[78vh] w-[52vw] rotate-[-9deg] rounded-[6rem] bg-[#6E9D3A] transition-colors duration-300 dark:bg-[#36511F] lg:block" />
         <div className="absolute top-32 -left-8 hidden text-[19rem] leading-none font-black tracking-[-0.08em] text-white/60 select-none dark:text-[#222817]/80 sm:block">
           E
         </div>
