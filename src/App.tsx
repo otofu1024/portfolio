@@ -1,26 +1,23 @@
 import icon from './assets/icon.png'
 
-const skills = [
-  'Python',
-  'Rust',
-  'Docker',
-  'Git',
-  'FastAPI',
-  'asyncio',
-  'httpx',
-  'Pydantic',
+const skillTree = [
+  {
+    language: 'Python',
+    libraries: ['FastAPI', 'httpx', 'asyncio', 'Pydantic'],
+  },
+  {
+    language: 'Rust',
+    libraries: ['axum', 'tokio'],
+  },
 ]
 
 const learningTopics = [
-  'Database',
   'TypeScript',
   'React',
   'Next.js',
-  'WebAssembly',
-  'OS自作',
-  'ソフトウェア設計',
   'Haskell',
   'Go',
+  'SQL',
 ]
 
 const projects = [
@@ -32,10 +29,10 @@ const projects = [
     link: 'https://github.com/otofu1024/Raft',
   },
   {
-    title: 'LINEbot',
+    title: 'LINE Chatbot',
     description:
       'LINE APIとGemini APIを使ったキャラクターチャットbotです。天気検索や授業検索機能も実装しました。',
-    tech: 'LINE API, Gemini API',
+    tech: 'Python, LINE API, Gemini API',
     link: 'https://github.com/otofu1024/char_linebot',
   },
 ]
@@ -43,11 +40,11 @@ const projects = [
 const navItems = ['About', 'Skills', 'Projects', 'Contact']
 
 const profileFacts = [
-  { label: '所属', value: '慶應義塾大学 SFC', icon: '🏫' },
-  { label: '出身', value: '富山', icon: '📍' },
-  { label: '得意', value: 'Python', icon: '</>' },
-  { label: '関心', value: '分散システム', icon: '▱' },
-]
+  { label: '所属', value: '慶應義塾大学 SFC', icon: 'school' },
+  { label: '出身', value: '富山', icon: 'location' },
+  { label: '使用言語', value: 'Python', icon: 'code' },
+  { label: '関心', value: '分散システム', icon: 'layers' },
+] as const
 
 function App() {
   return (
@@ -58,7 +55,7 @@ function App() {
             className="text-3xl font-black tracking-[0.16em] text-[#5F8F35]"
             href="#top"
           >
-            H.M.
+            E.M.
           </a>
           <ul className="hidden items-center gap-10 text-base font-semibold text-[#4A3E31] md:flex">
             {navItems.map((item) => (
@@ -127,10 +124,11 @@ function App() {
               id="hero-title"
               className="text-[clamp(4.6rem,12vw,8.9rem)] leading-[0.92] font-black tracking-[-0.08em] text-[#3F382F]"
             >
-              宮本英人
+              Eito Miyamoto
             </h1>
-            <p className="mt-8 max-w-2xl text-xl leading-10 font-semibold text-[#4A3E31]">
+            <p className="mt-8 max-w-2xl text-xl leading-normal font-semibold text-[#4A3E31]">
               慶應義塾大学 環境情報学部でコンピュータサイエンスを学んでいます。
+               <br />
               分散システムとWeb技術に関心があり、Pythonを中心に開発しています。
             </p>
             <div className="mt-10 flex flex-wrap items-center gap-5">
@@ -174,7 +172,7 @@ function App() {
                   key={fact.label}
                 >
                   <dt className="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#EEF2DF] text-lg font-black text-[#5F8F35]">
-                    {fact.icon}
+                    <ProfileFactIcon name={fact.icon} />
                   </dt>
                   <dd>
                     <span className="block text-sm font-bold text-[#8B7B61]">
@@ -200,12 +198,15 @@ function App() {
           <SectionTitle eyebrow="About" title="私について" />
           <div className="grid gap-6 lg:grid-cols-2">
             <p className="bg-white/55 p-7 text-lg leading-9 font-semibold text-[#5F5143]">
-              2006年生まれ、富山出身です。映画鑑賞、ゲーム、読書が好きで、
-              特にアニメ映画をよく観ています。
+              2006年生まれ、
+              富山出身。
+              <br />
+              趣味は映画鑑賞、ゲーム、読書です。
             </p>
             <p className="bg-[#EEF2DF] p-7 text-lg leading-9 font-semibold text-[#4A3E31]">
-              大学では主にコンピュータサイエンス、特に分散システムについて学んでいます。
-              最近は脱Pythonを目指し、Rustの所有権や型システムにも取り組んでいます。
+              大学ではコンピュータサイエンスを専攻し、特に分散システムについて学んでいます。
+              <br />
+              現在はPython中心の開発から一歩進み、Rustの所有権モデルや型システムを通じて、より堅牢なソフトウェア設計を学んでいます。
             </p>
           </div>
         </section>
@@ -217,8 +218,29 @@ function App() {
         >
           <SectionTitle eyebrow="Skills" title="技術" />
           <div className="space-y-10">
-            <SkillGroup title="使っている言語・技術" items={skills} variant="filled" />
-            <SkillGroup title="近いうちに学びたいこと" items={learningTopics} />
+            <div>
+              <p className="mb-5 text-base font-black text-[#6F6559]">
+                使用技術
+              </p>
+              <ul className="space-y-5" aria-label="使用技術">
+                {skillTree.map((skill) => (
+                  <li
+                    className="border-l-4 border-[#6E9D3A] bg-white/55 px-6 py-5"
+                    key={skill.language}
+                  >
+                    <p className="text-2xl font-black text-[#3F382F]">
+                      {skill.language}
+                    </p>
+                    {skill.libraries.length > 0 ? (
+                      <p className="mt-3 pl-4 text-lg font-bold text-[#6F6559]">
+                        ┗ {skill.libraries.join(', ')}
+                      </p>
+                    ) : null}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <SkillGroup title="学びたい技術" items={learningTopics} />
           </div>
         </section>
 
@@ -275,28 +297,84 @@ function App() {
               />
             ))}
           </div>
-          <div className="relative max-w-3xl">
-            <SectionTitle eyebrow="Contact" title="連絡先" />
+          <div className="relative max-w-5xl">
+            <div className="flex items-center gap-4">
+              <span className="flex size-9 shrink-0 items-center justify-center text-[#5F8F35]">
+                <ContactIcon name="mail" />
+              </span>
+              <h2
+                id="contact-title"
+                className="text-4xl leading-tight font-black tracking-[-0.04em] text-[#3F382F]"
+              >
+                連絡先
+              </h2>
+            </div>
             <p className="mt-7 text-xl leading-9 font-semibold text-[#5F5143]">
               制作や学習についての連絡は、メールまたはGitHubからお願いします。
             </p>
-            <ul className="mt-9 flex flex-wrap gap-5">
+            <ul className="mt-9 grid gap-5 lg:grid-cols-[minmax(0,1.16fr)_minmax(0,0.84fr)]">
               <li>
                 <a
-                  className="inline-flex bg-[#6E9D3A] px-7 py-4 text-base font-black text-white shadow-[0_18px_34px_rgba(95,143,53,0.25)] transition hover:-translate-y-1 hover:bg-[#5F8F35]"
+                  className="group grid h-full min-h-52 rounded-[1.75rem] border border-[#DCCA9D] bg-white/75 p-7 shadow-[0_18px_44px_rgba(74,62,49,0.10)] transition hover:-translate-y-1 hover:border-[#6E9D3A] hover:bg-white xl:p-8"
                   href="mailto:miya-kun@sfc.wide.ad.jp"
                 >
-                  miya-kun@sfc.wide.ad.jp
+                  <span className="flex items-center gap-5">
+                    <span className="flex size-16 shrink-0 items-center justify-center rounded-full bg-[#EEF2DF] text-[#5F8F35]">
+                      <ContactIcon name="mail" />
+                    </span>
+                    <span>
+                      <span className="block text-sm font-black tracking-[0.18em] text-[#5F8F35] uppercase">
+                        Email
+                      </span>
+                      <span className="mt-2 block break-all text-lg font-black text-[#3F382F] sm:break-normal xl:text-xl">
+                        miya-kun@sfc.wide.ad.jp
+                      </span>
+                    </span>
+                  </span>
+                  <span className="mt-8 flex items-center justify-between gap-4">
+                    <span className="text-lg font-bold text-[#6F6559]">
+                      メールを送る
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      className="flex size-14 items-center justify-center rounded-full bg-[#EEF2DF] text-3xl font-black text-[#6E9D3A] transition group-hover:translate-x-1"
+                    >
+                      →
+                    </span>
+                  </span>
                 </a>
               </li>
               <li>
                 <a
-                  className="inline-flex border border-[#DCCA9D] bg-[#FDFBF2]/80 px-7 py-4 text-base font-black text-[#4A3E31] transition hover:-translate-y-1 hover:border-[#6E9D3A] hover:text-[#5F8F35]"
+                  className="group grid h-full min-h-52 rounded-[1.75rem] border border-[#DCCA9D] bg-white/75 p-7 shadow-[0_18px_44px_rgba(74,62,49,0.10)] transition hover:-translate-y-1 hover:border-[#6E9D3A] hover:bg-white"
                   href="https://github.com/otofu1024"
                   target="_blank"
                   rel="noreferrer"
                 >
-                  GitHub
+                  <span className="flex items-center gap-5">
+                    <span className="flex size-16 shrink-0 items-center justify-center rounded-full bg-[#EEF2DF] text-[#3F382F]">
+                      <ContactIcon name="github" />
+                    </span>
+                    <span>
+                      <span className="block text-sm font-black tracking-[0.18em] text-[#5F8F35] uppercase">
+                        GitHub
+                      </span>
+                      <span className="mt-2 block text-xl font-black text-[#3F382F]">
+                        @otofu1024
+                      </span>
+                    </span>
+                  </span>
+                  <span className="mt-8 flex items-center justify-between gap-4">
+                    <span className="text-lg font-bold text-[#6F6559]">
+                      プロフィールを見る
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      className="flex size-14 items-center justify-center rounded-full bg-[#EEF2DF] text-3xl font-black text-[#6E9D3A] transition group-hover:translate-x-1"
+                    >
+                      →
+                    </span>
+                  </span>
                 </a>
               </li>
             </ul>
@@ -304,6 +382,92 @@ function App() {
         </section>
       </div>
     </main>
+  )
+}
+
+function ContactIcon({ name }: { name: 'mail' | 'github' }) {
+  if (name === 'github') {
+    return (
+      <svg
+        aria-hidden="true"
+        className="size-8"
+        fill="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path d="M12 .5A11.5 11.5 0 0 0 8.36 22.9c.58.11.79-.25.79-.56v-2c-3.22.7-3.9-1.38-3.9-1.38-.53-1.34-1.3-1.7-1.3-1.7-1.06-.72.08-.7.08-.7 1.17.08 1.79 1.2 1.79 1.2 1.04 1.78 2.73 1.27 3.4.97.1-.76.4-1.27.73-1.56-2.57-.29-5.27-1.28-5.27-5.72 0-1.26.45-2.3 1.2-3.1-.12-.3-.52-1.47.11-3.06 0 0 .98-.31 3.17 1.18a10.96 10.96 0 0 1 5.78 0c2.2-1.49 3.16-1.18 3.16-1.18.64 1.59.24 2.76.12 3.06.75.8 1.2 1.84 1.2 3.1 0 4.45-2.7 5.43-5.29 5.72.42.36.78 1.07.78 2.16v3.01c0 .31.21.68.8.56A11.5 11.5 0 0 0 12 .5Z" />
+      </svg>
+    )
+  }
+
+  return (
+    <svg
+      aria-hidden="true"
+      className="size-8"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2.2"
+      viewBox="0 0 24 24"
+    >
+      <path d="M4 6h16v12H4z" />
+      <path d="m4 7 8 6 8-6" />
+    </svg>
+  )
+}
+
+function ProfileFactIcon({
+  name,
+}: {
+  name: (typeof profileFacts)[number]['icon']
+}) {
+  const commonProps = {
+    className: 'size-6',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeLinecap: 'round',
+    strokeLinejoin: 'round',
+    strokeWidth: 2.4,
+    viewBox: '0 0 24 24',
+    'aria-hidden': true,
+  } as const
+
+  if (name === 'school') {
+    return (
+      <svg {...commonProps}>
+        <path d="M3 10.5 12 5l9 5.5" />
+        <path d="M5.5 10.5v8h13v-8" />
+        <path d="M9 18.5v-5.5h6v5.5" />
+        <path d="M4 20h16" />
+      </svg>
+    )
+  }
+
+  if (name === 'location') {
+    return (
+      <svg {...commonProps}>
+        <path d="M12 21s6-5.3 6-11a6 6 0 0 0-12 0c0 5.7 6 11 6 11Z" />
+        <path d="M12 12.3a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4Z" />
+      </svg>
+    )
+  }
+
+  if (name === 'code') {
+    return (
+      <svg {...commonProps}>
+        <path d="m9 8-4 4 4 4" />
+        <path d="m15 8 4 4-4 4" />
+        <path d="m13 6-2 12" />
+      </svg>
+    )
+  }
+
+  return (
+    <svg {...commonProps}>
+      <path d="m12 4 8 4-8 4-8-4 8-4Z" />
+      <path d="m4 12 8 4 8-4" />
+      <path d="m4 16 8 4 8-4" />
+    </svg>
   )
 }
 
