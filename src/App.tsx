@@ -368,7 +368,7 @@ function App() {
                       <span className="block text-sm font-black tracking-[0.18em] text-[#5F8F35] uppercase">
                         Email
                       </span>
-                      <span className="mt-2 block break-all text-lg font-black text-[#3F382F] dark:text-[#F7F0DD] sm:break-normal xl:text-xl">
+                      <span className="mt-2 block break-all text-lg font-black text-[#0EA5E9] transition group-hover:text-[#0284C7] dark:text-[#67E8F9] dark:group-hover:text-[#A5F3FC] sm:break-normal xl:text-xl">
                         miya-kun@sfc.wide.ad.jp
                       </span>
                     </span>
@@ -401,7 +401,7 @@ function App() {
                       <span className="block text-sm font-black tracking-[0.18em] text-[#5F8F35] uppercase">
                         GitHub
                       </span>
-                      <span className="mt-2 block text-xl font-black text-[#3F382F] dark:text-[#F7F0DD]">
+                      <span className="mt-2 block text-xl font-black text-[#0EA5E9] transition group-hover:text-[#0284C7] dark:text-[#67E8F9] dark:group-hover:text-[#A5F3FC]">
                         @otofu1024
                       </span>
                     </span>
