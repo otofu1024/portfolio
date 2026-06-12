@@ -1,73 +1,112 @@
-# React + TypeScript + Vite
+# Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+自己紹介ポートフォリオサイトです。TypeScript、Vite、React、Tailwind CSSで作成した1ページ構成の静的なフロントエンドアプリです。
 
-Currently, two official plugins are available:
+## 概要
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+このサイトでは、自己紹介、使用技術、制作物、連絡先を1ページにまとめています。エンジニアとしての学習姿勢、興味領域、私個人の雰囲気が伝わることを重視しています。
 
-## React Compiler
+主なセクションは以下です。
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Hero
+- About
+- Skills
+- Projects
+- Contact
 
-## Expanding the ESLint configuration
+## 主な機能
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Tailwind CSSによるレスポンシブな1ページデザイン
+- Hero右側のプロフィールパネルと斜めグリーン背景
+- プロフィール情報の統一されたSVGアイコン表示
+- スクロール位置に連動するヘッダー下線
+- ライト/ダークモードの手動切り替え
+- テーマ選択の `localStorage` 保存
+- Contact内のメール/GitHubリンクカード
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 技術スタック
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- ESLint
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## セットアップ
+
+依存関係をインストールします。
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+開発サーバーを起動します。
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+ビルドします。
+
+```bash
+npm run build
+```
+
+Lintを実行します。
+
+```bash
+npm run lint
+```
+
+ビルド結果をローカルで確認します。
+
+```bash
+npm run preview
+```
+
+## ファイル構成
+
+```text
+.
+├── AGENTS.md
+├── docs
+│   ├── ai
+│   │   ├── current-state.md
+│   │   ├── decisions.md
+│   │   └── project-brief.md
+│   └── user
+│       ├── about_me.md
+│       └── design.md
+├── public
+│   ├── favicon.svg
+│   └── icons.svg
+├── src
+│   ├── App.tsx
+│   ├── index.css
+│   ├── main.tsx
+│   └── assets
+│       └── icon.png
+├── index.html
+├── package.json
+├── tsconfig.json
+└── vite.config.ts
+```
+
+## 実装メモ
+
+- `src/App.tsx` にページ構造、表示データ、テーマ切り替え、スクロール連動のヘッダー状態を集約しています。
+- `src/index.css` でTailwind CSSを読み込み、`dark` variantとグローバルなベーススタイルを定義しています。
+- ダークモードは `document.documentElement` に `dark` classを付け外しして実現しています。
+- 初回テーマは `localStorage` を優先し、未保存の場合のみOSの `prefers-color-scheme` を参照します。
+- ルーティング、バックエンド、フォーム送信、CMS、アニメーションライブラリは使っていません。
+
+## AI向けドキュメント
+
+今後のAI作業用に、以下のドキュメントを用意しています。
+
+- `AGENTS.md`: Codexが守るルール
+- `docs/ai/current-state.md`: 現在の実装状態
+- `docs/ai/project-brief.md`: プロジェクトの目的と完成条件
+- `docs/ai/decisions.md`: 採用済みの設計判断
+- `docs/user/about_me.md`: ユーザー提供の本人情報
+- `docs/user/design.md`: ユーザー提供のデザイン方針
