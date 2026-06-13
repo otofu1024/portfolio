@@ -1,6 +1,6 @@
 # Portfolio
 
-自己紹介ポートフォリオサイトです。TypeScript、Vite、React、Tailwind CSSで作成した1ページ構成の静的なフロントエンドアプリです。
+自己紹介ポートフォリオサイトです。TypeScript、Vite、React、Tailwind CSSで作成した1ページ構成の静的なフロントエンドアプリです。うおおおおおおおおおおお
 
 ## 概要
 
